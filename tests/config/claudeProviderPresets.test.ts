@@ -214,3 +214,31 @@ describe("Microsoft Foundry Provider Preset", () => {
     expect(env).not.toHaveProperty("ANTHROPIC_AUTH_TOKEN");
   });
 });
+
+describe("StepFun Provider Presets", () => {
+  const presets = providerPresets.filter((p) => p.family === "stepfun");
+
+  it("should ship both regional Step Plan presets", () => {
+    expect(presets.map((p) => p.name).sort()).toEqual([
+      "StepFun",
+      "StepFun en",
+    ]);
+  });
+
+  // Step Plan 的窗口是 262,144；提前到 220,000 压缩，给工具结果和估算误差留余量。
+  // 不声明时 Claude Code 按 200K 之外的默认值走，长会话会先撞上游 400。
+  it.each([
+    ["StepFun", "https://api.stepfun.com/step_plan"],
+    ["StepFun en", "https://api.stepfun.ai/step_plan"],
+  ])(
+    "%s pins the 256K window with an earlier compact boundary",
+    (name, baseUrl) => {
+      const preset = presets.find((p) => p.name === name);
+      expect(preset).toBeDefined();
+      const env = (preset!.settingsConfig as any).env;
+      expect(env.ANTHROPIC_BASE_URL).toBe(baseUrl);
+      expect(env.CLAUDE_CODE_MAX_CONTEXT_TOKENS).toBe("262144");
+      expect(env.CLAUDE_CODE_AUTO_COMPACT_WINDOW).toBe("220000");
+    },
+  );
+});

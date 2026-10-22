@@ -1720,6 +1720,12 @@ export const providerPresets: ProviderPreset[] = [
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "step-3.5-flash-2603",
         ANTHROPIC_DEFAULT_SONNET_MODEL: "step-3.5-flash-2603",
         ANTHROPIC_DEFAULT_OPUS_MODEL: "step-3.5-flash-2603",
+        // 3.x 系列（本预设的默认模型）是 262,144 窗口；提前到 220,000 压缩，
+        // 给工具结果和估算误差留余量，否则长会话会撞上上游 400。
+        // step-5-preview 是 1M 窗口（官方模型页），换用它时要把这两项调高或删掉：
+        // Claude Code 只有一个全局窗口，无法按模型分别声明。
+        CLAUDE_CODE_MAX_CONTEXT_TOKENS: "262144",
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW: "220000",
       },
     },
     category: "cn_official",
@@ -1741,6 +1747,12 @@ export const providerPresets: ProviderPreset[] = [
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "step-3.5-flash-2603",
         ANTHROPIC_DEFAULT_SONNET_MODEL: "step-3.5-flash-2603",
         ANTHROPIC_DEFAULT_OPUS_MODEL: "step-3.5-flash-2603",
+        // 3.x 系列（本预设的默认模型）是 262,144 窗口；提前到 220,000 压缩，
+        // 给工具结果和估算误差留余量，否则长会话会撞上上游 400。
+        // step-5-preview 是 1M 窗口（官方模型页），换用它时要把这两项调高或删掉：
+        // Claude Code 只有一个全局窗口，无法按模型分别声明。
+        CLAUDE_CODE_MAX_CONTEXT_TOKENS: "262144",
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW: "220000",
       },
     },
     category: "cn_official",
